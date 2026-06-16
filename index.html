@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIDIUM — Программа адаптации</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2563EB;
+            --primary-light: #EFF6FF;
+            --primary-dark: #1E40AF;
+            --accent: #F59E0B;
+            --accent-light: #FFFBEB;
+            --success: #10B981;
+            --success-light: #ECFDF5;
+            --text: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --bg: #F8FAFC;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            background: linear-gradient(135deg, #1E40AF 0%, #2563EB 60%, #3B82F6 100%);
+            color: white;
+            padding: 72px 24px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60%; left: -40%;
+            width: 180%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 100px;
+            padding: 6px 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 6vw, 56px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 span { color: #FCD34D; }
+
+        .hero-sub {
+            font-size: 17px;
+            opacity: 0.8;
+            margin-bottom: 6px;
+        }
+
+        .hero-days {
+            font-size: 14px;
+            opacity: 0.6;
+            margin-bottom: 28px;
+        }
+
+        .hero-quote-block {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-left: 3px solid #FCD34D;
+            border-radius: 0 12px 12px 0;
+            padding: 16px 24px;
+            max-width: 540px;
+            text-align: left;
+        }
+
+        .hero-quote-block .quote-main {
+            font-size: 17px;
+            font-weight: 700;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .hero-quote-block .quote-sub {
+            font-size: 13px;
+            opacity: 0.75;
+            line-height: 1.6;
+        }
+
+        /* ─── PROGRESS BAR ─── */
+        .progress-sticky {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 13px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .progress-inner {
+            max-width: 880px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2563EB, #60A5FA);
+            border-radius: 100px;
+            transition: width 0.4s cubic-bezier(.4,0,.2,1);
+        }
+
+        .progress-pct {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--primary);
+            min-width: 38px;
+            text-align: right;
+        }
+
+        /* ─── CONTAINER ─── */
+        .wrap {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        /* ─── SECTION LABELS ─── */
+        .sec-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin: 44px 0 16px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 36px 0;
+        }
+
+        /* ─── INTRO BLOCK ─── */
+        .intro-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-top: 8px;
+        }
+
+        .intro-card p {
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .intro-card p:last-child { margin-bottom: 0; }
+
+        .week-goals {
+            display: grid;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .week-goal-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .week-goal-item::before {
+            content: '→';
+            color: var(--primary);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ─── WHO IS WHO ─── */
+        .who-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .who-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: 48px 1fr 1fr;
+            align-items: center;
+            gap: 16px;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .who-card:hover {
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+
+        .who-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .av-blue   { background: #EFF6FF; }
+        .av-green  { background: #ECFDF5; }
+        .av-yellow { background: #FFFBEB; }
+        .av-purple { background: #F5F3FF; }
+        .av-pink   { background: #FDF2F8; }
+        .av-gray   { background: #F1F5F9; }
+
+        .who-name { font-size: 15px; font-weight: 700; }
+        .who-role { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+        .who-scope { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+        /* ─── PHILOSOPHY ─── */
+        .phil-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .phil-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 22px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: box-shadow 0.2s;
+        }
+
+        .phil-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+
+        .phil-num {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .phil-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .phil-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .phil-text em {
+            display: block;
+            margin-top: 8px;
+            background: var(--bg);
+            border-left: 3px solid var(--primary);
+            padding: 8px 12px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        /* ─── GOALS GRID ─── */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+            gap: 12px;
+        }
+
+        .goal-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            transition: box-shadow 0.2s;
+        }
+
+        .goal-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .goal-icon { font-size: 26px; }
+        .goal-text { font-size: 14px; font-weight: 600; line-height: 1.4; }
+
+        /* ─── TIMELINE ─── */
+        .timeline {
+            position: relative;
+            padding-left: 34px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 11px; top: 10px; bottom: 10px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--border));
+        }
+
+        .tl-item { position: relative; margin-bottom: 18px; }
+
+        .tl-dot {
+            position: absolute;
+            left: -27px;
+            top: 19px;
+            width: 13px; height: 13px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid var(--white);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .tl-dot.green {
+            background: var(--success);
+            box-shadow: 0 0 0 2px var(--success);
+        }
+
+        /* ─── TASK CARD ─── */
+        .task-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .task-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+        .task-card.open { border-color: #BFDBFE; }
+
+        .task-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .task-time {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .task-title {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .task-chevron {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: transform 0.3s, background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .task-card.open .task-chevron {
+            transform: rotate(180deg);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .task-body {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s ease, padding 0.3s;
+        }
+
+        .task-card.open .task-body {
+            max-height: 3000px;
+            padding: 0 20px 22px;
+        }
+
+        .task-inner {
+            border-top: 1px solid var(--border);
+            padding-top: 18px;
+        }
+
+        .task-desc {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        /* ─── BOXES ─── */
+        .box {
+            border-radius: 10px;
+            padding: 13px 16px;
+            font-size: 14px;
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            line-height: 1.6;
+        }
+
+        .box-warn {
+            background: #FFF7ED;
+            border: 1px solid #FED7AA;
+            color: #9A3412;
+        }
+
+        .box-tip {
+            background: var(--accent-light);
+            border: 1px solid #FDE68A;
+            color: #78350F;
+        }
+
+        .box-info {
+            background: var(--primary-light);
+            border: 1px solid #BFDBFE;
+            color: #1E40AF;
+        }
+
+        .box-icon { flex-shrink: 0; }
+
+        /* ─── CHECKLIST ─── */
+        .checklist {
+            list-style: none;
+            margin-top: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 11px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .checklist li:last-child { border-bottom: none; }
+        .checklist li:hover { background: var(--bg); }
+
+        .checklist input[type="checkbox"] {
+            width: 17px; height: 17px;
+            flex-shrink: 0;
+            accent-color: var(--primary);
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .checklist label { cursor: pointer; line-height: 1.5; }
+
+        .checklist input:checked + label {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* ─── BREAK CARD ─── */
+        .break-card {
+            background: var(--success-light);
+            border: 1px solid #A7F3D0;
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .break-icon { font-size: 28px; }
+        .break-title { font-size: 15px; font-weight: 700; color: #065F46; }
+        .break-sub { font-size: 13px; color: #047857; margin-top: 2px; }
+
+        /* ─── EXPLORE LIST ─── */
+        .explore-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .explore-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .ei-icon { font-size: 20px; flex-shrink: 0; }
+        .ei-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .ei-sub { font-size: 13px; color: var(--text-muted); }
+
+        /* ─── ИТОГ ITEMS ─── */
+        .итог-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .итог-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        /* ─── CONTACTS ─── */
+        .contacts-group-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin: 22px 0 10px;
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 10px;
+        }
+
+        .contact-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .contact-card:hover {
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+
+        .contact-avatar {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .contact-name { font-size: 14px; font-weight: 700; }
+        .contact-role { font-size: 12px; color: var(--text-muted); }
+
+        .contact-phone {
+            display: block;
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 3px;
+            text-decoration: none;
+        }
+
+        .contact-phone:hover { text-decoration: underline; }
+
+        /* ─── FINAL CARD ─── */
+        .final-card {
+            background: linear-gradient(135deg, #1E40AF, #2563EB);
+            border-radius: 20px;
+            padding: 32px;
+            color: white;
+            margin-top: 40px;
+        }
+
+        .final-card h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .final-card p {
+            opacity: 0.75;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .final-list { list-style: none; display: grid; gap: 10px; }
+
+        .final-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 13px 16px;
+            line-height: 1.5;
+        }
+
+        .final-list input[type="checkbox"] {
+            width: 17px; height: 17px;
+            flex-shrink: 0;
+            accent-color: #FCD34D;
+            margin-top: 1px;
+            cursor: pointer;
+        }
+
+        .final-list label { cursor: pointer; }
+
+        .final-list input:checked + label {
+            text-decoration: line-through;
+            opacity: 0.45;
+        }
+
+        /* ─── NAV ─── */
+        .nav-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding-top: 32px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 26px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1D4ED8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37,99,235,0.4);
+        }
+
+        .btn-ghost {
+            background: var(--white);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 640px) {
+            .who-card { grid-template-columns: 42px 1fr; }
+            .who-scope { display: none; }
+            .goals-grid { grid-template-columns: 1fr 1fr; }
+            .contacts-grid { grid-template-columns: 1fr; }
+            .nav-row { flex-direction: column; }
+            .intro-card { padding: 20px; }
+            .final-card { padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<div class="hero">
+    <div class="hero-badge">🚀 Программа адаптации · LIDIUM</div>
+    <h1>Добро пожаловать<br>в <span>LIDIUM</span></h1>
+    <div class="hero-sub">Программа адаптации специалиста по Яндекс.Директ</div>
+    <div class="hero-days">Первые 4 рабочих дня</div>
+    <div style="display: flex; justify-content: center;">
+        <div class="hero-quote-block">
+            <div class="quote-main">«Сначала наточи топор — потом иди рубить»</div>
+            <div class="quote-sub">Эта неделя — твой топор. Не торопись настраивать рекламу. Сначала пойми систему, людей и подход. Тогда всё остальное встанет на место само.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════ PROGRESS ═══════════════════════════════ -->
+<div class="progress-sticky">
+    <div class="progress-inner">
+        <span class="progress-label">Прогресс дня</span>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <!-- ═══════════════════════════════ О ПРОГРАММЕ ═══════════════════════════════ -->
+    <div class="sec-label">📖 О чём эта программа</div>
+    <div class="intro-card">
+        <p>Эта программа — не формальный документ «для галочки». Это твой навигатор на первую неделю в LIDIUM. Здесь объяснено не только <strong>что делать</strong>, но и <strong>зачем</strong> — потому что осознанный специалист работает лучше, чем тот, кто просто выполняет инструкции.</p>
+
+        <div class="sec-label" style="margin-top: 4px;">За эту неделю ты:</div>
+        <div class="week-goals">
+            <div class="week-goal-item">Познакомишься с командой и поймёшь, кто за что отвечает</div>
+            <div class="week-goal-item">Разберёшься в том, как устроена работа с клиентами в агентстве</div>
+            <div class="week-goal-item">Узнаешь все инструменты и процессы, с которыми будешь работать ежедневно</div>
+            <div class="week-goal-item">Попрактикуешься на реальных или тестовых проектах под контролем наставника</div>
+            <div class="week-goal-item">К концу четвёртого дня сможешь уверенно рассказать, как устроен запуск и сопровождение проекта в LIDIUM</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════ КТО ЕСТЬ КТО ═══════════════════════════════ -->
+    <div class="sec-label">👥 Кто есть кто</div>
+    <div class="who-grid">
+        <div class="who-card">
+            <div class="who-avatar av-blue">👨‍💼</div>
+            <div>
+                <div class="who-name">Захар</div>
+                <div class="who-role">Руководитель агентства</div>
+            </div>
+            <div class="who-scope">Стратегия, сложные ситуации, допродажи, новые проекты</div>
+        </div>
+        <div class="who-card">
+            <div class="who-avatar av-purple">🎨</div>
+            <div>
+                <div class="who-name">Вероника</div>
+                <div class="who-role">Руководитель отдела разработки</div>
+            </div>
+            <div class="who-scope">ТЗ на баннеры, правки сайта, виджеты</div>
+        </div>
+        <div class="who-card">
+            <div class="who-avatar av-green">📋</div>
+            <div>
+                <div class="who-name">Елена</div>
+                <div class="who-role">Аккаунт-менеджер</div>
+            </div>
+            <div class="who-scope">Регистрация сервисов, электронная отчётность</div>
+        </div>
+        <div class="who-card">
+            <div class="who-avatar av-yellow">⚙️</div>
+            <div>
+                <div class="who-name">Наиля</div>
+                <div class="who-role">Бизнес-ассистент, проджект-менеджер</div>
+            </div>
+            <div class="who-scope">Организационные вопросы, координация задач</div>
+        </div>
+        <div class="who-card">
+            <div class="who-avatar av-blue">🎯</div>
+            <div>
+                <div class="who-name">Коллеги-директологи</div>
+                <div class="who-role">Рекламный отдел</div>
+            <div class="who-scope">Обмен опытом, помощь в сложных проектах</div>
+        </div>
+        <div class="who-card">
+            <div class="who-avatar av-pink">🧑‍🏫</div>
+            <div>
+                <div class="who-name">Наставник</div>
+                <div class="who-role">Сеньор-директолог (для джуна)</div>
+            </div>
+            <div class="who-scope">Ежедневная поддержка в первую неделю</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════ ФИЛОСОФИЯ ═══════════════════════════════ -->
+    <div class="sec-label">💙 Философия LIDIUM — 5 вещей, которые важно понять с первого дня</div>
+    <div class="phil-list">
+
+        <div class="phil-card">
+            <div class="phil-num">1</div>
+            <div>
+                <div class="phil-title">Конечный результат — стоимость клиента, а не CTR</div>
+                <div class="phil-text">Красивые цифры в кабинете не равны довольному клиенту. Клиент платит за заявки и продажи — вот твой ориентир. Всегда держи в голове вопрос: сколько стоит один привлечённый клиент?</div>
+            </div>
+        </div>
+
+        <div class="phil-card">
+            <div class="phil-num">2</div>
+            <div>
+                <div class="phil-title">Сначала анализ — потом действие</div>
+                <div class="phil-text">80% времени на старте проекта — это анализ. Юнит-экономика, путь клиента, конкуренты. Реклама без этого — деньги на ветер.</div>
+            </div>
+        </div>
+
+        <div class="phil-card">
+            <div class="phil-num">3</div>
+            <div>
+                <div class="phil-title">Ты — руководитель проекта, а не исполнитель</div>
+                <div class="phil-text">Директолог в LIDIUM держит в фокусе все незакрытые задачи и сам инициирует их решение. Ждать, пока кто-то придёт — не наш стиль.</div>
+            </div>
+        </div>
+
+        <div class="phil-card">
+            <div class="phil-num">4</div>
+            <div>
+                <div class="phil-title">Клиент должен чувствовать заботу</div>
+                <div class="phil-text">Быстрые ответы, честная коммуникация, отсутствие фразы «я не знаю» — это базовый стандарт. Если не знаешь ответа, пишешь:
+                    <em>«Вижу вопрос, разбираюсь, вернусь с ответом»</em>
+                </div>
+            </div>
+        </div>
+
+        <div class="phil-card">
+            <div class="phil-num">5</div>
+            <div>
+                <div class="phil-title">Ошибка — это повод улучшить процесс</div>
+                <div class="phil-text">Ошиблись впервые — разбираем и фиксируем решение. Системная ошибка — серьёзный разговор. Мы не наказываем за единичные промахи, но ждём, что ты из них делаешь выводы.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════ ДЕНЬ 1 ЗАГОЛОВОК ═══════════════════════════════ -->
+    <div style="background: linear-gradient(135deg, #1E40AF, #2563EB); border-radius: 16px; padding: 28px 32px; color: white; margin-bottom: 32px;">
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 8px;">📅 День 1 из 4</div>
+        <div style="font-size: 26px; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 6px;">Первый рабочий день</div>
+        <div style="font-size: 14px; opacity: 0.75;">Знакомство, доступы, первое погружение в проекты</div>
+    </div>
+
+    <!-- ═══════════════════════════════ ЦЕЛИ ДНЯ ═══════════════════════════════ -->
+    <div class="sec-label">🎯 Цели первого дня</div>
+    <div class="goals-grid">
+        <div class="goal-card">
+            <div class="goal-icon">🤝</div>
+            <div class="goal-text">Познакомиться с командой лично</div>
+        </div>
+        <div class="goal-card">
+            <div class="goal-icon">🔑</div>
+            <div class="goal-text">Получить все рабочие доступы</div>
+        </div>
+        <div class="goal-card">
+            <div class="goal-icon">🔍</div>
+            <div class="goal-text">Изучить первые клиентские аккаунты</div>
+        </div>
+        <div class="goal-card">
+            <div class="goal-icon">📝</div>
+            <div class="goal-text">Зафиксировать вопросы и выводы</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════ РАСПИСАНИЕ ═══════════════════════════════ -->
+    <div class="sec-label">📋 Расписание дня</div>
+
+    <div class="timeline">
+
+        <!-- ── БЛОК 1: Вводная встреча ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task1">
+                <div class="task-header" onclick="toggleTask('task1')">
+                    <span class="task-time">09:00 – 10:00 МСК</span>
+                    <span class="task-title">Вводная встреча с руководителем (Захар)</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">
+                            Первая встреча — не техническая, а человеческая. Ты познакомишься с Захаром, узнаешь как устроено агентство, куда оно движется и какова твоя роль в этом.<br><br>
+                            В рамках этой же встречи вместе с Захаром или наставником получишь все необходимые рабочие доступы.
+                        </div>
+
+                        <div class="sec-label" style="margin-top: 0; margin-bottom: 4px;">Получи доступы к:</div>
+                        <ul class="checklist">
+                            <li>
+                                <input type="checkbox" id="c1" onchange="updateProgress()">
+                                <label for="c1">Яндекс.Директ — первые клиенты, которых планируем передать</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c2" onchange="updateProgress()">
+                                <label for="c2">Яндекс.Метрика</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c3" onchange="updateProgress()">
+                                <label for="c3">Google Таблицы — общая сводная таблица по проектам</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c4" onchange="updateProgress()">
+                                <label for="c4">Рабочие чаты в Telegram и Макс</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c5" onchange="updateProgress()">
+                                <label for="c5">Примеры других клиентских аккаунтов для изучения (только просмотр)</label>
+                            </li>
+                        </ul>
+
+                        <div class="box box-warn">
+                            <span class="box-icon">⚠️</span>
+                            <span><strong>Важно:</strong> если какой-то доступ не получен в первый день — не жди. Сам уточни у Захара или Елены, как его получить. Проактивность начинается с первого часа.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── ПЕРЕРЫВ 10:00–11:30 ── -->
+        <div class="tl-item">
+            <div class="tl-dot green"></div>
+            <div class="break-card">
+                <div class="break-icon">☕</div>
+                <div>
+                    <div class="break-title">10:00 – 11:30 — Свободное время</div>
+                    <div class="break-sub">Изучи рабочие чаты, освойся в интерфейсах, выпей кофе</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 2: Знакомство с командой ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task2">
+                <div class="task-header" onclick="toggleTask('task2')">
+                    <span class="task-time">11:30 – 13:00 МСК</span>
+                    <span class="task-title">Знакомство с командой — общая оперативка</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">
+                            Тебя официально представят на общей оперативке. У тебя будет <strong>2–3 минуты</strong>, чтобы рассказать о себе — всё, что сочтёшь нужным: кто ты, откуда, какой опыт, чем интересуешься.<br><br>
+                            После оперативки — отдельно познакомься в переписке с <strong>Вероникой</strong> и <strong>Еленой</strong>. Их контакты — в конце этой страницы.
+                        </div>
+
+                        <div class="explore-list">
+                            <div class="explore-item">
+                                <span class="ei-icon">🎙️</span>
+                                <div>
+                                    <div class="ei-title">Самопрезентация команде</div>
+                                    <div class="ei-sub">2–3 минуты — кто ты, откуда, что умеешь, чем интересуешься</div>
+                                </div>
+                            </div>
+                            <div class="explore-item">
+                                <span class="ei-icon">💬</span>
+                                <div>
+                                    <div class="ei-title">Личное знакомство в переписке</div>
+                                    <div class="ei-sub">Напиши Веронике и Елене в личку — именно с ними будешь работать каждый день</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="checklist" style="margin-top: 16px;">
+                            <li>
+                                <input type="checkbox" id="c6" onchange="updateProgress()">
+                                <label for="c6">Представился команде на оперативке</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c7" onchange="updateProgress()">
+                                <label for="c7">Написал Веронике в личку и познакомился</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c8" onchange="updateProgress()">
+                                <label for="c8">Написал Елене в личку и познакомился</label>
+                            </li>
+                        </ul>
+
+                        <div class="box box-tip">
+                            <span class="box-icon">💡</span>
+                            <span><strong>Зачем это нужно:</strong> Вероника и Елена — твои ближайшие коллеги по рабочим процессам. Чем раньше установишь человеческий контакт, тем проще будет ставить задачи и получать помощь.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── ОБЕД ── -->
+        <div class="tl-item">
+            <div class="tl-dot green"></div>
+            <div class="break-card">
+                <div class="break-icon">🍽️</div>
+                <div>
+                    <div class="break-title">13:00 – 14:00 — Обед</div>
+                    <div class="break-sub">Заслуженный перерыв — половина дня уже позади!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 3: Клиентские аккаунты ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task3">
+                <div class="task-header" onclick="toggleTask('task3')">
+                    <span class="task-time">14:00 – 16:00 МСК</span>
+                    <span class="task-title">Знакомство с клиентскими аккаунтами</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">
+                            Открываешь аккаунты, к которым получил доступ. Не настраиваешь — только изучаешь и фиксируешь. Задача — понять контекст каждого проекта.
+                        </div>
+
+                        <div class="explore-list">
+                            <div class="explore-item">
+                                <span class="ei-icon">🏢</span>
+                                <div>
+                                    <div class="ei-title">Какие услуги продвигаются</div>
+                                    <div class="ei-sub">Что за бизнес, что продаёт, на какую аудиторию работает</div>
+                                </div>
+                            </div>
+                            <div class="explore-item">
+                                <span class="ei-icon">🛠️</span>
+                                <div>
+                                    <div class="ei-title">Какие сервисы используются в проекте</div>
+                                    <div class="ei-sub">Директ, Метрика, колл-трекинг, CRM — что подключено</div>
+                                </div>
+                            </div>
+                            <div class="explore-item">
+                                <span class="ei-icon">📈</span>
+                                <div>
+                                    <div class="ei-title">Какие показатели имеем на текущий момент</div>
+                                    <div class="ei-sub">Бюджет, количество заявок, CPL, CTR — фиксируй всё</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="checklist" style="margin-top: 16px;">
+                            <li>
+                                <input type="checkbox" id="c9" onchange="updateProgress()">
+                                <label for="c9">Изучил, какие услуги продвигаются в каждом проекте</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c10" onchange="updateProgress()">
+                                <label for="c10">Разобрался, какие сервисы используются</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="c11" onchange="updateProgress()">
+                                <label for="c11">Зафиксировал текущие показатели для обсуждения завтра</label>
+                            </li>
+                        </ul>
+
+                        <div class="box box-tip">
+                            <span class="box-icon">💡</span>
+                            <span><strong>Не пытайся сразу всё понять досконально.</strong> Задача дня — получить общее представление о каждом проекте и сформулировать вопросы. Глубокое погружение начнётся со второго дня.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 4: Итог дня ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task4">
+                <div class="task-header" onclick="toggleTask('task4')">
+                    <span class="task-time">16:00 – 16:30 МСК</span>
+                    <span class="task-title">Итог дня</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">
+                            Напиши короткий список — для себя или наставника. Это не отчёт и не экзамен: это инструмент, чтобы первый рабочий день превратился в чёткую стартовую точку, а не растворился в хаосе впечатлений.
+                        </div>
+
+                        <div class="итог-list">
+                            <div class="итог-item">
+                                <span>🤝</span>
+                                <span>Со всеми ли коллегами удалось познакомиться?</span>
+                            </div>
+                            <div class="итог-item">
+                                <span>🔑</span>
+                                <span>Какие доступы получены, а какие ещё нет?</span>
+                            </div>
+                            <div class="итог-item">
+                                <span>📊</span>
+                                <span>Краткие выводы по проектам, которые дали на ознакомление</span>
+                            </div>
+                            <div class="итог-item">
+                                <span>❓</span>
+                                <span>Что вызвало вопросы?</span>
+                            </div>
+                        </div>
+
+                        <ul class="checklist" style="margin-top: 16px;">
+                            <li>
+                                <input type="checkbox" id="c12" onchange="updateProgress()">
+                                <label for="c12">Написал итоговый список для себя или наставника</label>
+                            </li>
+                        </ul>
+
+                        <div class="box box-info">
+                            <span class="box-icon">💡</span>
+                            <span>Это не отчёт и не экзамен. Это инструмент для тебя самого — чтобы первый рабочий день не растворился в хаосе впечатлений, а превратился в понятную стартовую точку.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /timeline -->
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════════════════ КОНТАКТЫ ═══════════════════════════════ -->
+    <div class="sec-label">📞 Контакты сотрудников для связи</div>
+
+    <div class="contacts-group-label">Штатные сотрудники</div>
+    <div class="contacts-grid">
+
+        <div class="contact-card">
+            <div class="contact-avatar av-blue">👨‍💼</div>
+            <div>
+                <div class="contact-name">Захар</div>
+                <div class="contact-role">Генеральный директор</div>
+                <a class="contact-phone" href="tel:+79373653543">+7 937 365-35-43</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-green">📋</div>
+            <div>
+                <div class="contact-name">Елена</div>
+                <div class="contact-role">Аккаунт-менеджер</div>
+                <a class="contact-phone" href="tel:+79174118311">+7 917 411-83-11</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-purple">🎨</div>
+            <div>
+                <div class="contact-name">Вероника</div>
+                <div class="contact-role">Руководитель отдела разработки</div>
+                <a class="contact-phone" href="tel:+79223037661">+7 922 303-76-61</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-yellow">⚙️</div>
+            <div>
+                <div class="contact-name">Наиля</div>
+                <div class="contact-role">Бизнес-ассистент, проджект-менеджер</div>
+                <a class="contact-phone" href="tel:+84384031735">+8 438 403-17-35</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-blue">🎯</div>
+            <div>
+                <div class="contact-name">Аделия</div>
+                <div class="contact-role">Директолог</div>
+                <a class="contact-phone" href="tel:+79177519168">+7 917 751-91-68</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-pink">🎯</div>
+            <div>
+                <div class="contact-name">Юля</div>
+                <div class="contact-role">Директолог</div>
+                <a class="contact-phone" href="tel:+79279662259">+7 927 966-22-59</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-blue">🎯</div>
+            <div>
+                <div class="contact-name">Данил</div>
+                <div class="contact-role">Директолог</div>
+                <a class="contact-phone" href="tel:+79964031972">+7 996 403-19-72</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-green">🎯</div>
+            <div>
+                <div class="contact-name">Ксения</div>
+                <div class="contact-role">Директолог</div>
+                <a class="contact-phone" href="tel:+79245030971">+7 924 503-09-71</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="contacts-group-label">Сотрудники на аутсорсе</div>
+    <div class="contacts-grid">
+
+        <div class="contact-card">
+            <div class="contact-avatar av-yellow">📱</div>
+            <div>
+                <div class="contact-name">Ольга</div>
+                <div class="contact-role">Таргетолог ВК, Авито</div>
+                <a class="contact-phone" href="tel:+79517435359">+7 951 743-53-59</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-purple">🔧</div>
+            <div>
+                <div class="contact-name">Татьяна</div>
+                <div class="contact-role">Интегратор Битрикс-24</div>
+                <a class="contact-phone" href="tel:+79517891312">+7 951 789-13-12</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-blue">📱</div>
+            <div>
+                <div class="contact-name">Дмитрий</div>
+                <div class="contact-role">Таргетолог ВК</div>
+                <a class="contact-phone" href="tel:+79991347012">+7 999 134-70-12</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-green">🔍</div>
+            <div>
+                <div class="contact-name">Роман</div>
+                <div class="contact-role">SEO-специалист</div>
+                <a class="contact-phone" href="tel:+79177668734">+7 917 766-87-34</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-pink">💻</div>
+            <div>
+                <div class="contact-name">Неля</div>
+                <div class="contact-role">Программист Битрикс</div>
+                <a class="contact-phone" href="tel:+79178060790">+7 917 806-07-90</a>
+            </div>
+        </div>
+
+        <div class="contact-card">
+            <div class="contact-avatar av-gray">💻</div>
+            <div>
+                <div class="contact-name">Дамир</div>
+                <div class="contact-role">Программист</div>
+                <a class="contact-phone" href="tel:+79656565604">+7 965 656-56-04</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════ ФИНАЛЬНЫЙ ЧЕКЛИСТ ═══════════════════════════════ -->
+    <div class="final-card">
+        <h2>✅ Финальный чеклист дня</h2>
+        <p>Перед тем как закрыть ноутбук — убедись, что всё выполнено</p>
+        <ul class="final-list">
+            <li>
+                <input type="checkbox" id="f1" onchange="updateProgress()">
+                <label for="f1">Получил все доступы — или знаю, у кого запросить недостающие</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f2" onchange="updateProgress()">
+                <label for="f2">Познакомился с командой на оперативке и представился</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f3" onchange="updateProgress()">
+                <label for="f3">Написал Веронике и Елене в личку</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f4" onchange="updateProgress()">
+                <label for="f4">Изучил клиентские аккаунты и зафиксировал показатели</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f5" onchange="updateProgress()">
+                <label for="f5">Составил список вопросов и выводов по итогу дня</label>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+    <div class="nav-row">
+        <button class="btn btn-ghost" disabled>← Предыдущий день</button>
+        <a href="#" class="btn btn-primary">День 2 — Погружение в проекты →</a>
+    </div>
+
+</div><!-- /wrap -->
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+    LIDIUM · Программа адаптации специалиста по Яндекс.Директ · День 1 из 4
+</footer>
+
+<script>
+    // ── Toggle task cards ──
+    function toggleTask(id) {
+        const card = document.getElementById(id);
+        card.classList.toggle('open');
+    }
+
+    // ── Auto-open first task on load ──
+    window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('task1').classList.add('open');
+        updateProgress();
+    });
+
+    // ── Progress bar ──
+    function updateProgress() {
+        const all = document.querySelectorAll('input[type="checkbox"]');
+        const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+        const pct = Math.round((checked.length / all.length) * 100);
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressPct').textdocument.getElementById('progressPct').textContent = pct + '%';
+    }
+</script>
+
+</body>
+</html>
