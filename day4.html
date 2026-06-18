@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>День 4 — Проверка и план вперёд | LIDIUM</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --brand:     #2563EB;
+            --brand-lt:  #EFF6FF;
+            --brand-mid: #BFDBFE;
+            --green:     #16A34A;
+            --green-lt:  #F0FDF4;
+            --green-mid: #BBF7D0;
+            --yellow:    #D97706;
+            --yellow-lt: #FFFBEB;
+            --yellow-mid:#FDE68A;
+            --red:       #DC2626;
+            --red-lt:    #FEF2F2;
+            --red-mid:   #FECACA;
+            --gray:      #6B7280;
+            --gray-lt:   #F9FAFB;
+            --gray-mid:  #E5E7EB;
+            --text:      #111827;
+            --text-2:    #374151;
+            --radius:    12px;
+            --shadow:    0 2px 12px rgba(0,0,0,.07);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F3F4F6;
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* ── HEADER ── */
+        .site-header {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-mid);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .logo { font-size: 18px; font-weight: 800; color: var(--brand); letter-spacing: -.5px; }
+        .logo span { color: var(--text); }
+        .header-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+        .day-pill {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--gray);
+            background: var(--gray-lt);
+            border: 1px solid var(--gray-mid);
+            transition: all .2s;
+        }
+        .day-pill:hover { background: var(--brand-lt); color: var(--brand); border-color: var(--brand-mid); }
+        .day-pill.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+        /* ── PROGRESS BAR ── */
+        .progress-bar-wrap {
+            background: #fff;
+            border-bottom: 1px solid var(--gray-mid);
+            padding: 8px 0;
+        }
+        .progress-bar-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .progress-label { font-size: 13px; color: var(--gray); white-space: nowrap; }
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: var(--gray-mid);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand), #60A5FA);
+            border-radius: 99px;
+            transition: width .4s ease;
+            width: 0%;
+        }
+        .progress-pct { font-size: 13px; font-weight: 700; color: var(--brand); min-width: 36px; text-align: right; }
+
+        /* ── WRAP ── */
+        .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 60%, #3B82F6 100%);
+            border-radius: var(--radius);
+            padding: 36px 32px;
+            color: #fff;
+            margin-bottom: 32px;
+        }
+        .hero-day { font-size: 13px; font-weight: 600; opacity: .75; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+        .hero-title { font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 8px; }
+        .hero-sub { font-size: 15px; opacity: .85; margin-bottom: 24px; }
+        .hero-goals { display: grid; gap: 8px; }
+        .hero-goal {
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .hero-goal-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+        /* ── TIMELINE ── */
+        .timeline { position: relative; display: grid; gap: 20px; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: var(--gray-mid);
+        }
+        .tl-item { position: relative; padding-left: 40px; }
+        .tl-dot {
+            position: absolute;
+            left: 7px;
+            top: 20px;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: var(--brand);
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px var(--brand-mid);
+        }
+        .tl-dot.green { background: var(--green); box-shadow: 0 0 0 2px var(--green-mid); }
+        .tl-dot.gold  { background: var(--yellow); box-shadow: 0 0 0 2px var(--yellow-mid); }
+
+        /* ── TASK CARD ── */
+        .task-card {
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--gray-mid);
+        }
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+        }
+        .task-header:hover { background: var(--gray-lt); }
+        .task-time { font-size: 12px; font-weight: 600; color: var(--brand); white-space: nowrap; background: var(--brand-lt); padding: 3px 8px; border-radius: 6px; }
+        .task-title { flex: 1; font-weight: 700; font-size: 15px; }
+        .task-chevron { color: var(--gray); font-size: 12px; transition: transform .25s; }
+        .task-card.open .task-chevron { transform: rotate(180deg); }
+        .task-body { display: none; padding: 0 20px 20px; }
+        .task-card.open .task-body { display: block; }
+        .task-inner { display: grid; gap: 16px; }
+
+        /* ── BREAK CARD ── */
+        .break-card {
+            background: var(--green-lt);
+            border: 1px solid var(--green-mid);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .break-icon { font-size: 24px; }
+        .break-title { font-weight: 700; font-size: 15px; color: var(--green); }
+        .break-sub { font-size: 13px; color: var(--gray); }
+
+        /* ── BOXES ── */
+        .box {
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+        .box-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+        .box-tip  { background: var(--brand-lt); border: 1px solid var(--brand-mid); }
+        .box-warn { background: var(--yellow-lt); border: 1px solid var(--yellow-mid); }
+        .box-info { background: #F0F9FF; border: 1px solid #BAE6FD; }
+        .box-danger { background: var(--red-lt); border: 1px solid var(--red-mid); }
+        .box-green { background: var(--green-lt); border: 1px solid var(--green-mid); }
+
+        /* ── SEC LABEL ── */
+        .sec-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* ── TASK DESC ── */
+        .task-desc { color: var(--text-2); font-size: 14px; padding-top: 4px; }
+
+        /* ── CHECKLIST ── */
+        .checklist {
+            list-style: none;
+            display: grid;
+            gap: 8px;
+            background: var(--gray-lt);
+            border: 1px solid var(--gray-mid);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+        .checklist li { display: flex; align-items: flex-start; gap: 10px; }
+        .checklist input[type="checkbox"] {
+            width: 16px; height: 16px;
+            margin-top: 2px;
+            accent-color: var(--brand);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .checklist label { font-size: 14px; cursor: pointer; line-height: 1.5; }
+        .checklist input:checked + label { color: var(--gray); text-decoration: line-through; }
+
+        /* ── STEPS (бизнес-процесс) ── */
+        .steps-list { display: grid; gap: 10px; }
+        .step-item {
+            background: #fff;
+            border: 1px solid var(--gray-mid);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+        }
+        .step-header:hover { background: var(--gray-lt); }
+        .step-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--brand);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-num.sub { background: #60A5FA; font-size: 11px; }
+        .step-name { font-weight: 600; font-size: 14px; flex: 1; }
+        .step-chevron { color: var(--gray); font-size: 11px; transition: transform .25s; }
+        .step-item.open .step-chevron { transform: rotate(180deg); }
+        .step-body { display: none; padding: 0 16px 14px 56px; }
+        .step-item.open .step-body { display: block; }
+        .step-body p { font-size: 14px; color: var(--text-2); line-height: 1.65; margin-bottom: 8px; }
+        .step-body p:last-child { margin-bottom: 0; }
+        .step-body strong { color: var(--text); }
+        .step-body ul { padding-left: 18px; display: grid; gap: 5px; margin-top: 6px; }
+        .step-body ul li { font-size: 14px; color: var(--text-2); }
+        .step-body .msg-block {
+            background: #F8FAFC;
+            border-left: 3px solid var(--brand);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            font-size: 13px;
+            color: var(--text-2);
+            white-space: pre-line;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+        .step-body .msg-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--brand);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 4px;
+        }
+        .step-body a { color: var(--brand); }
+        .step-body .tag-warn {
+            display: inline-block;
+            background: var(--yellow-lt);
+            border: 1px solid var(--yellow-mid);
+            color: var(--yellow);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 2px 8px;
+            margin-bottom: 6px;
+        }
+        .step-body .tag-info {
+            display: inline-block;
+            background: var(--brand-lt);
+            border: 1px solid var(--brand-mid);
+            color: var(--brand);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 2px 8px;
+            margin-bottom: 6px;
+        }
+        .steps-overview {
+            display: grid;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .step-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--gray-lt);
+            border: 1px solid var(--gray-mid);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        .step-pill-num {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: var(--brand);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ── QUESTIONS GRID ── */
+        .questions-grid { display: grid; gap: 10px; }
+        .q-section {
+            background: var(--gray-lt);
+            border: 1px solid var(--gray-mid);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .q-section-header {
+            background: var(--brand-lt);
+            border-bottom: 1px solid var(--brand-mid);
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--brand);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .q-list { padding: 10px 14px; display: grid; gap: 6px; }
+        .q-item {
+            display: flex;
+            gap: 8px;
+            font-size: 13.5px;
+            color: var(--text-2);
+            align-items: flex-start;
+        }
+        .q-arrow { color: var(--brand); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+        /* ── SCENARIO CARDS ── */
+        .scenario-grid { display: grid; gap: 10px; }
+        .scenario-card {
+            border-radius: 10px;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-mid);
+            background: #fff;
+        }
+        .scenario-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; }
+        .scenario-body { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+        /* ── WEEK PLAN ── */
+        .week-grid { display: grid; gap: 10px; }
+        .week-card {
+            background: #fff;
+            border: 1px solid var(--gray-mid);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .week-header {
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 14px;
+            background: var(--brand);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .week-header.green { background: var(--green); }
+        .week-header.yellow { background: var(--yellow); }
+        .week-header.red { background: #7C3AED; }
+        .week-body { padding: 12px 16px; display: grid; gap: 6px; }
+        .week-item { display: flex; gap: 8px; font-size: 13.5px; color: var(--text-2); align-items: flex-start; }
+        .week-dot { color: var(--brand); font-weight: 700; flex-shrink: 0; }
+
+        /* ── RHYTHM TABLE ── */
+        .rhythm-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--gray-mid); }
+        .rhythm-row { display: grid; grid-template-columns: 200px 1fr; border-bottom: 1px solid var(--gray-mid); }
+        .rhythm-row:last-child { border-bottom: none; }
+        .rhythm-row.header { background: var(--brand); color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+        .rhythm-cell { padding: 10px 14px; font-size: 13.5px; }
+        .rhythm-row:not(.header) .rhythm-cell:first-child { background: var(--brand-lt); font-weight: 600; color: var(--brand); font-size: 13px; }
+
+        /* ── ПАМЯТКА ── */
+        .memo-wrap { display: grid; gap: 14px; }
+        .memo-block { border-radius: 10px; overflow: hidden; border: 1px solid; }
+        .memo-block.red   { border-color: var(--red-mid); }
+        .memo-block.yellow { border-color: var(--yellow-mid); }
+        .memo-block.green  { border-color: var(--green-mid); }
+        .memo-header { padding: 10px 16px; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .memo-block.red    .memo-header { background: var(--red-lt); color: var(--red); }
+        .memo-block.yellow .memo-header { background: var(--yellow-lt); color: var(--yellow); }
+        .memo-block.green  .memo-header { background: var(--green-lt); color: var(--green); }
+        .memo-list { padding: 10px 16px; display: grid; gap: 6px; background: #fff; }
+        .memo-item { display: flex; gap: 8px; font-size: 13.5px; color: var(--text-2); align-items: flex-start; }
+        .memo-mark { flex-shrink: 0; font-size: 14px; }
+
+        /* ── INTERACT ── */
+        .interact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .interact-card {
+            background: var(--gray-lt);
+            border: 1px solid var(--gray-mid);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .interact-avatar { font-size: 26px; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .interact-name { font-weight: 700; font-size: 14px; }
+        .interact-role { font-size: 12px; color: var(--gray); }
+        .interact-topic { font-size: 13px; color: var(--text-2); }
+
+        /* ── FINAL CARD ── */
+        .final-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-mid);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-top: 32px;
+        }
+        .final-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+        .final-card > p { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+        .final-sections { display: grid; gap: 16px; }
+        .final-section-title { font-size: 13px; font-weight: 700; color: var(--brand); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+        .final-list { list-style: none; display: grid; gap: 8px; }
+        .final-list li { display: flex; align-items: flex-start; gap: 10px; }
+        .final-list input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--brand); cursor: pointer; flex-shrink: 0; }
+        .final-list label { font-size: 14px; cursor: pointer; line-height: 1.5; }
+        .final-list input:checked + label { color: var(--gray); text-decoration: line-through; }
+        .final-sections-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .final-sections-2col { grid-template-columns: 1fr; } }
+
+        /* ── WELCOME BANNER ── */
+        .welcome-banner {
+            background: linear-gradient(135deg, #065F46, #16A34A);
+            border-radius: var(--radius);
+            padding: 28px 28px;
+            color: #fff;
+            text-align: center;
+            margin-top: 32px;
+        }
+        .welcome-banner .wb-icon { font-size: 40px; margin-bottom: 10px; }
+        .welcome-banner h2 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+        .welcome-banner p { font-size: 14px; opacity: .9; max-width: 520px; margin: 0 auto 14px; }
+        .welcome-banner .wb-tagline { font-size: 16px; font-weight: 700; opacity: 1; }
+
+        /* ── QUOTE ── */
+        .quote {
+            background: var(--brand-lt);
+            border-left: 3px solid var(--brand);
+            border-radius: 0 8px 8px 0;
+            padding: 12px 14px;
+            font-size: 14px;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+
+        /* ── DIVIDER ── */
+        .divider { height: 1px; background: var(--gray-mid); margin: 32px 0; }
+
+        /* ── NAV ── */
+        .nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all .2s;
+        }
+        .btn-primary { background: var(--brand); color: #fff; }
+        .btn-primary:hover { background: #1D4ED8; }
+        .btn-ghost { background: #fff; color: var(--brand); border: 2px solid var(--brand-mid); }
+        .btn-ghost:hover { background: var(--brand-lt); }
+        .btn-disabled { background: var(--gray-mid); color: var(--gray); cursor: default; }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 12px;
+            color: var(--gray);
+            border-top: 1px solid var(--gray-mid);
+            background: #fff;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .hero { padding: 24px 18px; }
+            .hero-title { font-size: 20px; }
+            .wrap { padding: 20px 14px 40px; }
+            .rhythm-row { grid-template-columns: 140px 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header">
+    <div class="header-inner">
+        <div class="logo">LIDIUM<span> · Адаптация</span></div>
+        <nav class="header-nav">
+            <a href="day1.html" class="day-pill">День 1</a>
+            <a href="day2.html" class="day-pill">День 2</a>
+            <a href="day3.html" class="day-pill">День 3</a>
+            <a href="day4.html" class="day-pill active">День 4</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ═══ PROGRESS ═══ -->
+<div class="progress-bar-wrap">
+    <div class="progress-bar-inner">
+        <span class="progress-label">Прогресс дня:</span>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="wrap">
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+        <div class="hero-day">День 4 из 4</div>
+        <div class="hero-title">Проверка и план вперёд</div>
+        <div class="hero-sub">«Убедись, что фундамент заложен правильно»</div>
+        <div class="hero-goals">
+            <div class="hero-goal"><span class="hero-goal-icon">🗺️</span><span>Систематизировать всё, что узнал за неделю</span></div>
+            <div class="hero-goal"><span class="hero-goal-icon">✅</span><span>Разобрать полный бизнес-процесс запуска нового клиента</span></div>
+            <div class="hero-goal"><span class="hero-goal-icon">💬</span><span>Пройти финальную проверку знаний с Захаром</span></div>
+            <div class="hero-goal"><span class="hero-goal-icon">📅</span><span>Уйти на выходные с чётким планом на первый месяц</span></div>
+        </div>
+    </div>
+
+    <!-- ── TIMELINE ── -->
+    <div class="timeline">
+
+        <!-- ── БЛОК 1: Бизнес-процесс ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card open" id="task1">
+                <div class="task-header" onclick="toggleTask('task1')">
+                    <span class="task-time">09:00 – 12:00 МСК</span>
+                    <span class="task-title">Бизнес-процесс: запуск нового клиента</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+
+                        <div class="task-desc">
+                            СегодняСегодня ты изучаешь и разбираешь полный цикл запуска нового проекта — от первого сообщения в чате до старта рекламы. Это основа твоей ежедневной работы.
+                        </div>
+
+                        <div class="box box-warn">
+                            <span class="box-icon">⚠️</span>
+                            <span>Твоя задача — не просто прочитать, а <strong>понять логику каждого шага</strong>. В 14:00 ты будешь рассказывать этот процесс Захару вслух.</span>
+                        </div>
+
+                        <!-- Обзор шагов -->
+                        <div class="sec-label">📋 16 шагов запуска — обзор</div>
+                        <div class="steps-overview">
+                            <div class="step-pill"><div class="step-pill-num">1</div>Создание рабочего чата, знакомство с проектом, орг. информация</div>
+                            <div class="step-pill"><div class="step-pill-num">1.1</div>Аудит текущих посадочных страниц</div>
+                            <div class="step-pill"><div class="step-pill-num">2</div>Брифинг клиента</div>
+                            <div class="step-pill"><div class="step-pill-num">3</div>Анализ конкурентов</div>
+                            <div class="step-pill"><div class="step-pill-num">4</div>Сборка семантического ядра и минусовка</div>
+                            <div class="step-pill"><div class="step-pill-num">5</div>Получение доступов и занесение в таблицу</div>
+                            <div class="step-pill"><div class="step-pill-num">6</div>Постановка ТЗ на баннеры для РСЯ</div>
+                            <div class="step-pill"><div class="step-pill-num">7</div>Разработка прототипов одноэкранников (при необх.)</div>
+                            <div class="step-pill"><div class="step-pill-num">8</div>Отправка макетов на согласование заказчику</div>
+                            <div class="step-pill"><div class="step-pill-num">9</div>Запросить реквизиты для выставления счёта</div>
+                            <div class="step-pill"><div class="step-pill-num">10</div>Настройка / Проверка Яндекс.Метрики</div>
+                            <div class="step-pill"><div class="step-pill-num">11</div>Подключение доп. сервисов (при необх.)</div>
+                            <div class="step-pill"><div class="step-pill-num">12</div>Выгрузка и прохождение модерации. Проверка руководителем</div>
+                            <div class="step-pill"><div class="step-pill-num">13</div>Выставить счёт для пополнения рекламного кабинета</div>
+                            <div class="step-pill"><div class="step-pill-num">14</div>Отправка тестовых заявок</div>
+                            <div class="step-pill"><div class="step-pill-num">15</div>Презентация выполненных работ</div>
+                            <div class="step-pill"><div class="step-pill-num">16</div>Прописать орг. информацию по дальнейшему сопровождению</div>
+                        </div>
+
+                        <!-- Детализация шагов -->
+                        <div class="sec-label">🔍 Детальный разбор каждого шага</div>
+                        <div class="steps-list">
+
+                            <!-- ШАГ 1 -->
+                            <div class="step-item open" id="step1">
+                                <div class="step-header" onclick="toggleStep('step1')">
+                                    <div class="step-num">1</div>
+                                    <div class="step-name">Создание рабочего чата, знакомство с проектом, орг. информация</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p><strong>Тайминг:</strong> на весь этап — не более 4 рабочих часов с момента создания чата до отправки вводной орг. информации клиенту.</p>
+                                    <p><strong>Кто создаёт чат:</strong> аккаунт-менеджер Елена, Захар или уполномоченный представитель заказчика. Ты как директолог — инициатор каждого последующего действия внутри этапа.</p>
+                                    <p><strong>Платформа:</strong> Telegram или МАКС — в зависимости от удобства заказчика.</p>
+                                    <p><strong>Первый шаг после появления в чате:</strong> получить права администратора. Напиши тому, кто может тебя назначить, и попроси сделать тебя админом.</p>
+                                    <p><strong>До первого сообщения клиенту</strong> — получи от руководителя все договорённости: сроки, рекламируемые продукты, ссылки на сайты, бюджеты, контактные лица. Если доступ к проекту не открыт — пиши Захару в МАКС или Telegram.</p>
+                                    <div class="tag-info">Обязательный минимум по проекту перед стартом:</div>
+                                    <ul>
+                                        <li>Сроки запуска (обещанные клиенту по договору)</li>
+                                        <li>Информация о посадочных страницах</li>
+                                        <li>Рекламные бюджеты</li>
+                                        <li>Контактные лица со стороны заказчика</li>
+                                    </ul>
+                                    <p style="margin-top:10px;">После ознакомления с договорённостями — пишешь приветственное сообщение в чат:</p>
+                                    <div class="msg-label">📨 Шаблон приветственного сообщения</div>
+                                    <div class="msg-block">Добрый день! Меня зовут [...]. Я буду заниматься запуском вашего проекта.
+
+Проект сегодня взяли в работу. Для запуска вашего проекта мы разрабатываем рекламные кампании в Яндекс.Директ для рекламы [таких-то услуг на такие-то сайты]
+
+Срок реализации [...] рабочих дней.
+
+Этап запуска выглядит следующим образом.
+
+1 этап. [...] дня. Предпроектное исследование
+Изучение вашего бизнеса. Для понимания специфики и особенностей продукта. Его конкурентных преимуществ. Обстановки на рынке. Изучаем информацию из открытых источников, по отработанной нами методике. А также дополнительно через использование нейросетей.
+
+2 этап. [...] дня. Подготовка семантического ядра
+Мы собираем семантическое ядро запросов для Яндекс.Директ. Для того чтобы ваши потенциальные клиенты могли вас находить в поисковой выдаче. А также мы могли настроить эффективную поведенческую рекламу и догонять ваших клиентов баннерами.
+
+3 этап. [...] дня
+Готовим тексты рекламных объявлений, заголовки, уточнения, быстрые ссылки и прочее. Готовим графические баннеры. Чтобы наши объявления были составлены качественно. Выглядели конкурентными, отражали ваши самые сильные стороны.
+
+4 этап. [...] дня
+Регистрация рекламного кабинета. Выгрузка рекламных кампаний, прохождение модерации. Направляем примеры объявлений и баннеров. Формируем счёт на пополнение рекламного кабинета.
+
+Для экономии вашего времени после завершения всех работ направляю в чат скриншоты рекламного кабинета со своими комментариями. Направляю все доступы. При необходимости можем организовать Zoom-встречу.
+
+Перед первым запуском проведём последние проверки сайта. Убедимся, что вам всё приходит и нужным образом размечается. И после этого можно будет пополнять рекламный кабинет и запускаться.</div>
+                                    <div class="box box-tip" style="margin-top:8px;">
+                                        <span class="box-icon">💡</span>
+                                        <span>Приветственное сообщение можно и нужно адаптировать под конкретный проект.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 1.1 -->
+                            <div class="step-item" id="step1-1">
+                                <div class="step-header" onclick="toggleStep('step1-1')">
+                                    <div class="step-num sub">1.1</div>
+                                    <div class="step-name">Аудит текущих посадочных страниц</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <div class="tag-warn">⚠️ Важно</div>
+                                    <p>От эффективности посадочной страницы зависит результат твоей работы. Если сайт неэффективен для рекламы — твоя ответственность как минимум донести это. Запуск рекламы на заведомо слабый сайт — это почти всегда негатив и скандал с клиентом.</p>
+                                    <p><strong>Ты можешь ставить под сомнение работу любого специалиста, включая работу руководителя.</strong></p>
+                                    <p style="margin-top:8px;"><strong>Сценарий 1 — сайт делали мы:</strong> в 100% случаев рекомендации можно обсудить с отделом дизайна. Уточни у руководителя, кто делал сайт и кто будет вносить правки.</p>
+                                    <p><strong>Сценарий 2 — сайт от заказчика:</strong> сначала уточни у руководителя, не обсуждалось ли с клиентом необходимость доработок. Если сайт «всё плохо, надо переделывать» — донеси это Захару. Если правки небольшие — уточни, с чьей стороны производятся доработки. В 80% случаев правим своими силами.</p>
+                                    <p><strong>Сценарий 3 — несколько ошибок, устранимых своими силами:</strong> сообщи заказчику в свободной форме, что есть рекомендации по сайту до запуска. Формируй список. Спроси, кто с его стороны внесёт изменения. Если специалиста нет — предложи нашу помощь.</p>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 2 -->
+                            <div class="step-item" id="step2">
+                                <div class="step-header" onclick="toggleStep('step2')">
+                                    <div class="step-num">2</div>
+                                    <div class="step-name">Брифинг клиента</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p><strong>Если ниша знакомая</strong> — уведомляй клиента, что у нас большой опыт в этом направлении. Задай уточняющие вопросы по ценовой политике и специфике.</p>
+                                    <p><strong>Если ниша новая</strong> — назначь дату и время брифинга.</p>
+                                    <div class="box box-warn" style="margin-top:8px;">
+                                        <span class="box-icon">⚠️</span>
+                                        <div>До брифинга допускаются только директологи, согласовавшие механику с Захаром. <strong>Первую встречу проводит Захар — ты наблюдаешь.</strong> Следующую проводишь сам под присмотром руководителя. Далее — самостоятельно (на усмотрение Захара).</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 3 -->
+                            <div class="step-item" id="step3">
+                                <div class="step-header" onclick="toggleStep('step3')">
+                                    <div class="step-num">3</div>
+                                    <div class="step-name">Анализ конкурентов</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Механик анализа конкурентов много. Каждый специалист привык работать по-своему.</p>
+                                    <p>В дальнейшем мы будем пополнять базу знаний на эту тему — чтобы у нас был общий высокоэффективный подход. Также будем проводить общие встречи с записью, чтобы у всей команды вырабатывался отчасти единый подход.</p>
+                                    <div class="box box-tip" style="margin-top:8px;">
+                                        <span class="box-icon">💡</span>
+                                        <span>Если у тебя есть наработки по анализу конкурентов — поделись с командой. Это ценится.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 4 -->
+                            <div class="step-item" id="step4">
+                                <div class="step-header" onclick="toggleStep('step4')">
+                                    <div class="step-num">4</div>
+                                    <div class="step-name">Сборка семантического ядра и минусовка</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p><strong>Парсинг запросов</strong> — через сервис <a href="https://word-keeper.ru" target="_blank">word-keeper.ru</a></p>
+                                    <ul>
+                                        <li>Логин: <strong>z.nizamov12@gmail.com</strong></li>
+                                        <li>Пароль: <strong>oD9GyWWN9</strong></li>
+                                        <li>Если пароль изменился — напиши Аделие, она вышлет актуальный доступ</li>
+                                    </ul>
+                                    <p style="margin-top:8px;">Можешь использовать любой удобный тебе инструмент. Word Keeper оплачивается агентством — пользуйся. Если сервис не оплачен — пиши Захару.</p>
+                                    <p><strong>Минусовку</strong> делаем удобным способом. Захар использует Key Collector.</p>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 5 -->
+                            <div class="step-item" id="step5">
+                                <div class="step-header" onclick="toggleStep('step5')">
+                                    <div class="step-num">5</div>
+                                    <div class="step-name">Получение доступов и занесение в таблицу</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Ответственность директолога — составить полную картину проекта и заблаговременно получить все необходимые доступы.</p>
+                                    <p style="margin-top:8px;"><strong>1. Рекламный кабинет:</strong> по умолчанию для новых клиентов регистрируется новый аккаунт в Elama. Регистрацией занимается Аделия — напиши ей о необходимости и попроси прислать доступы. Возможны частные случаи: действующий аккаунт от клиента или обычный кабинет Яндекс.Директ. Этот момент необходимо прояснить на 2–3 день с момента старта работ.</p>
+                                    <p><strong>2. Сайт:</strong> уточни на чём реализован (Tilda, Bitrix, WordPress), какие сторонние сервисы используются (Marquiz, EnvyBox, коллтрекинг). Если сайт разрабатываем мы — получением доступов занимается Елена. Если сайт готовый — запросить у заказчика и передать Елене для внесения в таблицу.</p>
+                                    <div class="box box-tip" style="margin-top:8px;">
+                                        <span class="box-icon">💡</span>
+                                        <span>Прежде чем писать заказчику — уточни у Лены, не были ли доступы получены ранее.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 6 -->
+                            <div class="step-item" id="step6">
+                                <div class="step-header" onclick="toggleStep('step6')">
+                                    <div class="step-num">6</div>
+                                    <div class="step-name">Постановка ТЗ на баннеры для РСЯ</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Ставь задачу дизайнеру <strong>за 2 суток</strong> до нужной даты.</p>
+                                    <p>Для первого запуска достаточно <strong>5 баннеров</strong> на 1 услугу/товар. Не ставь задачу на 10–15 баннеров сразу — это затягивает производство. После запуска поставишь ещё одну задачу на следующий комплект.</p>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 7 -->
+                            <div class="step-item" id="step7">
+                                <div class="step-header" onclick="toggleStep('step7')">
+                                    <div class="step-num">7</div>
+                                    <div class="step-name">Разработка прототипов одноэкранников (при необх.)</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Требуется в проектах с экспресс-тестом нового направления. Если проект предполагает эту задачу — тебя об этом предупредят заранее.</p>
+                                    <div class="box box-tip" style="margin-top:8px;">
+                                        <span class="box-icon">💡</span>
+                                        <span>Нет опыта? Договорись с Захаром провести обучение: как с помощью ИИ за 20–30 минут собрать отличный продающий прототип сайта.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 8 -->
+                            <div class="step-item" id="step8">
+                                <div class="step-header" onclick="toggleStep('step8')">
+                                    <div class="step-num">8</div>
+                                    <div class="step-name">Отправка макетов на согласование заказчику</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>По готовности баннеров и одноэкранников — отправляешь в чат с заказчиком с сопроводительным сообщением:</p>
+                                    <div class="msg-label">📨 Шаблон сообщения</div>
+                                    <div class="msg-block">Добрый день! Для запуска рекламы подготовили первую партию графических материалов. Эти баннеры будут видеть ваши потенциальные клиенты, если Яндекс заметит их интерес к вашим услугам. Баннеры лишь часть рекламного объявления. Как будет выглядеть объявление окончательно — вы увидите позже, когда мы выгрузим все рекламные материалы в рекламный кабинет.</div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 9 -->
+                            <div class="step-item" id="step9">
+                                <div class="step-header" onclick="toggleStep('step9')">
+                                    <div class="step-num">9</div>
+                                    <div class="step-name">Запросить реквизиты для выставления счёта</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Запрашивай реквизиты <strong>за 3–4 дня</strong> до планируемой даты запуска — у разных компаний платёжные дни разные. Счёт тоже отправляй заранее.</p>
+                                    <p style="margin-top:8px;">Перед отправкой — убедись, что бюджеты с клиентом уже обсуждались.</p>
+                                    <div class="msg-label">📨 Шаблон запроса реквизитов</div>
+                                    <div class="msg-block">[Имя], здравствуйте! [такого-то числа] мы планируем запуск рекламы. Я бы хотел(а) сейчас сформировать первый счёт на пополнение рекламного кабинета. Подскажите пожалуйста, как вы планируете пополнять рекламный кабинет? Через расчётный счёт или наличкой?</div>
+                                    <ul>
+                                        <li><strong>Расчётный счёт:</strong> уточни у Лены, на какие реквизиты делался договор. Если совпадают — запроси у Лены карту партнёра. Если другие — запрашивай у клиента.</li>
+                                        <li><strong>Наличка:</strong> запрашивай данные для маркировки: ФИО, ИНН, электронная почта.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 10 -->
+                            <div class="step-item" id="step10">
+                                <div class="step-header" onclick="toggleStep('step10')">
+                                    <div class="step-num">10</div>
+                                    <div class="step-name">Настройка / Проверка Яндекс.Метрики</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <div class="tag-warn">🚫 Запуск рекламы без настроенной аналитики — НЕДОПУСТИМ</div>
+                                    <p>Если сайт на конструкторе (Tilda, Flexby, Creatium) — настраивай счётчик самостоятельно. Если на CMS (Bitrix, WordPress) — либо сам (если есть навык), либо уточни с клиентом, кто поможет с установкой, и подготовь ТЗ.</p>
+                                    <p style="margin-top:8px;">Обязательно:</p>
+                                    <ul>
+                                        <li>Настроить все необходимые цели</li>
+                                        <li>Подключить Метрику во всех доп. сервисах: Marquiz, EnvyBox, коллтрекинг</li>
+                                        <li>Настроить цели во всех сервисах</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 11 -->
+                            <div class="step-item" id="step11">
+                                <div class="step-header" onclick="toggleStep('step11')">
+                                    <div class="step-num">11</div>
+                                    <div class="step-name">Подключение доп. сервисов (при необх.)</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>По умолчанию во всех проектах подключаются:</p>
+                                    <ul>
+                                        <li><strong>Callibri</strong> — коллтрекинг для отслеживания звонков</li>
+                                        <li><strong>EnvyBox</strong> — виджет обратного звонка</li>
+                                    </ul>
+                                    <p style="margin-top:8px;">Если идёт параллельная разработка сайта — подключением занимается Елена. Уточняй доступы у неё.</p>
+                                    <p>Если сайт только настройка Директа на существующий сайт — уточни, какие сервисы уже используются, есть ли коллтрекинг и виджет обратного звонка. После получения информации — <strong>пиши Захару для уточнения дальнейших шагов.</strong></p>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 12 -->
+                            <div class="step-item" id="step12">
+                                <div class="step-header" onclick="toggleStep('step12')">
+                                    <div class="step-num">12</div>
+                                    <div class="step-name">Выгрузка, модерация и проверка руководителем</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Выгрузку рекламных кампаний производим через <strong>Direct.Commander</strong>.</p>
+                                    <p style="margin-top:8px;">После выгрузки — самопроверка по чек-листу:</p>
+                                    <p><a href="https://docs.google.com/spreadsheets/d/11trZ75QlLoHZvOYm74urQUyinVyMjN9T/edit?usp=sharing" target="_blank">📋 Открыть чек-лист самопроверки →</a></p>
+                                    <div class="box box-danger" style="margin-top:8px;">
+                                        <span class="box-icon">🚨</span>
+                                        <div>Спешка может стоить очень дорого. За слитый бюджет платим из своего кармана. <strong>Проверяй каждый шаг.</strong></div>
+                                    </div>
+                                    <p style="margin-top:8px;">Модерация проходит в течение 4–8 часов. Убедись, что всё одобрено.</p>
+                                    <div class="tag-warn">Медицинские проекты</div>
+                                    <div class="msg-block">Здравствуйте, мы запустили рекламные кампании. Предметом рекламы являются медицинские услуги. Чтобы ускорить прохождение модерации направляем в чат номер медицинской лицензии [номер лицензии]. Прошу допустить рекламные кампании к показам.</div>
+                                    <p>После проверки — отправь клиенту доступ к рекламному кабинету с сопроводительным письмом:</p>
+                                    <div class="msg-label">📨 Шаблон письма с доступами</div>
+                                    <div class="msg-block">[ИМЯ], Добрый день! Вам[ИМЯ], Добрый день! Вам направляю логин и пароль от рекламного кабинета.
+
+Яндекс.Директ. Вход: https://direct.yandex.ru/
+Логин: [логин]
+Пароль: [пароль]
+
+Аналитика в рекламном кабинете: здесь вы можете ознакомиться с рекламными объявлениями, статистикой показов и кликов.
+
+Яндекс.Метрика: https://metrika.yandex.ru/
+Логин: [логин]
+Пароль: [пароль]
+
+В Метрике отображается статистика посещений и конверсий сайта. Все заявки с сайта фиксируются как "Цели".</div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 13 -->
+                            <div class="step-item" id="step13">
+                                <div class="step-header" onclick="toggleStep('step13')">
+                                    <div class="step-num">13</div>
+                                    <div class="step-name">Выставить счёт для пополнения рекламного кабинета</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Если клиент платит <strong>через расчётный счёт</strong> — пишешь Лене, она выставляет счёт через Elama. После оплаты баланс пополнится автоматически.</p>
+                                    <p style="margin-top:8px;">Если клиент платит <strong>наличкой или картой</strong> — пишешь Лене, она формирует счёт для маркировки через Elama. После оплаты — Лена пополняет баланс вручную.</p>
+                                    <div class="box box-warn" style="margin-top:8px;">
+                                        <span class="box-icon">⚠️</span>
+                                        <span><strong>Не запускай рекламу, пока баланс не пополнен.</strong> Всегда проверяй перед запуском.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 14 -->
+                            <div class="step-item" id="step14">
+                                <div class="step-header" onclick="toggleStep('step14')">
+                                    <div class="step-num">14</div>
+                                    <div class="step-name">Отправка тестовых заявок</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>Перед финальным запуском — <strong>проверь, как работают все формы на сайте</strong>. Оставь тестовые заявки через каждую форму.</p>
+                                    <p style="margin-top:8px;">Убедись:</p>
+                                    <ul>
+                                        <li>Заявки приходят клиенту (на почту, в мессенджер, в CRM)</li>
+                                        <li>Цели фиксируются в Яндекс.Метрике</li>
+                                        <li>Коллтрекинг работает (если подключён)</li>
+                                        <li>EnvyBox/виджеты реагируют корректно</li>
+                                    </ul>
+                                    <div class="box box-danger" style="margin-top:8px;">
+                                        <span class="box-icon">🚨</span>
+                                        <span>Если хоть одна форма не работает — <strong>запуск запрещён</strong> до устранения проблемы.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 15 -->
+                            <div class="step-item" id="step15">
+                                <div class="step-header" onclick="toggleStep('step15')">
+                                    <div class="step-num">15</div>
+                                    <div class="step-name">Презентация выполненных работ</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>После запуска — направляешь клиенту скриншоты с комментариями. Это повышает доверие и снимает вопросы «а что вы вообще сделали».</p>
+                                    <p style="margin-top:8px;"><strong>Что показываем:</strong></p>
+                                    <ul>
+                                        <li>Структуру рекламных кампаний</li>
+                                        <li>Примеры объявлений (поиск + РСЯ)</li>
+                                        <li>Статус модерации</li>
+                                        <li>Баланс рекламного кабинета</li>
+                                        <li>Настроенные цели в Метрике</li>
+                                    </ul>
+                                    <div class="msg-label">📨 Шаблон презентации</div>
+                                    <div class="msg-block">[ИМЯ], добрый день! Рекламные кампании запущены. Направляю краткую сводку по выполненным работам.
+
+🔹 Структура кампаний:
+[скриншот]
+
+🔹 Примеры поисковых объявлений:
+[скриншот]
+
+🔹 Примеры баннеров РСЯ:
+[скриншот]
+
+🔹 Модерация пройдена, реклама показывается.
+
+🔹 В Яндекс.Метрике настроены цели:
+[скриншот]
+
+Если появятся вопросы — пишите в этот чат. Буду на связи!</div>
+                                </div>
+                            </div>
+
+                            <!-- ШАГ 16 -->
+                            <div class="step-item" id="step16">
+                                <div class="step-header" onclick="toggleStep('step16')">
+                                    <div class="step-num">16</div>
+                                    <div class="step-name">Прописать орг. информацию по дальнейшему сопровождению</div>
+                                    <div class="step-chevron">▼</div>
+                                </div>
+                                <div class="step-body">
+                                    <p>После запуска — отправь клиенту сообщение о том, как выстроено дальнейшее ведение.</p>
+                                    <div class="msg-label">📨 Шаблон сообщения</div>
+                                    <div class="msg-block">[ИМЯ], добрый день! Пара слов о дальнейшей работе.
+
+📊 Отчётность: каждые [...] я направляю вам отчёт по рекламе. В нём — показы, клики, расходы, количество заявок и звонков.
+
+🔔 Связь: если у вас появились вопросы или изменения в бизнесе (новые услуги, акции, изменение цен) — пишите в этот чат. Мы оперативно вносим корректировки.
+
+💳 Баланс: рекомендую держать баланс рекламного кабинета не ниже [сумма]. Как только баланс подходит к минимуму — я вас предупрежу заранее.
+
+Спасибо за доверие! Будем работать на результат 🚀</div>
+                                </div>
+                            </div>
+
+                        </div><!-- /steps-list -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── ОБЕД ── -->
+        <div class="tl-item">
+            <div class="tl-dot green"></div>
+            <div class="break-card">
+                <div class="break-icon">🍽️</div>
+                <div>
+                    <div class="break-title">Обед — 12:00 – 13:00 МСК</div>
+                    <div class="break-sub">Полноценный перерыв. Отойди от компьютера, подвигайся, пообедай.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 2: Финальный экзамен ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task2">
+                <div class="task-header" onclick="toggleTask('task2')">
+                    <span class="task-time">13:00 – 14:00 МСК</span>
+                    <span class="task-title">Подготовка к экзамену: вопросы и сценарии</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">Изучи вопросы ниже — именно их Захар будет задавать в 14:00. Подготовь краткие, чёткие ответы. Не заучивай — пойми суть.</div>
+
+                        <div class="box box-warn">
+                            <span class="box-icon">⚠️</span>
+                            <span>Встреча в 14:00 не тест на «поймать». Это разговор двух профессионалов. Если не знаешь ответа — говори честно, и вместе разберём.</span>
+                        </div>
+
+                        <div class="sec-label">❓ Блок 1 — Процесс и коммуникация</div>
+                        <div class="questions-grid">
+                            <div class="q-section">
+                                <div class="q-section-header">📋 Бизнес-процесс запуска</div>
+                                <div class="q-list">
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Назови 16 шагов запуска нового клиента по порядку — без подсказок.</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Что ты делаешь в первые 30 минут после попадания в рабочий чат?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Почему нельзя запускать рекламу без тестовых заявок?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Когда ты запрашиваешь реквизиты и почему за 3–4 дня?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Что делать, если сайт клиента явно слабый и не конвертирует?</span></div>
+                                </div>
+                            </div>
+                            <div class="q-section">
+                                <div class="q-section-header">💬 Коммуникация с клиентом</div>
+                                <div class="q-list">
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Клиент пишет в 22:00: «Почему нет заявок уже 3 дня?» — твои действия.</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Клиент требует запустить рекламу «прямо сейчас», а Метрика ещё не настроена. Что говоришь?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Как ты отреагируешь, если клиент напрямую спросит: «Вы лучше конкурентов?»</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Клиент хочет добавить 3 новые услуги в рекламу, а ты только что запустил. Как приоритизируешь?</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sec-label">❓ Блок 2 — Инструменты и стандарты</div>
+                        <div class="questions-grid">
+                            <div class="q-section">
+                                <div class="q-section-header">🛠️ Инструменты</div>
+                                <div class="q-list">
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Какой сервис используем для парсинга ключей? Логин?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Через что делаем выгрузку кампаний в Директ?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Какие доп. сервисы подключаются по умолчанию во всех проектах?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Кто регистрирует рекламный кабинет в Elama?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Где хранятся чек-листы и шаблоны?</span></div>
+                                </div>
+                            </div>
+                            <div class="q-section">
+                                <div class="q-section-header">👥 Команда</div>
+                                <div class="q-list">
+                                    <div class="q-item"><span class="q-arrow">›</span><span>По каким вопросам ты идёшь к Аделие, а по каким к Лене?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Когда директолог проводит брифинг самостоятельно, а когда — только наблюдает?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>За сколько дней ставишь ТЗ дизайнеру? Сколько баннеров на старт?</span></div>
+                                    <div class="q-item"><span class="q-arrow">›</span><span>Что значит «проверка руководителем» перед запуском?</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 3: Встреча с Захаром ── -->
+        <div class="tl-item">
+            <div class="tl-dot gold"></div>
+            <div class="task-card" id="task3">
+                <div class="task-header" onclick="toggleTask('task3')">
+                    <span class="task-time">14:00 – 15:00 МСК</span>
+                    <span class="task-title">⭐ Финальная встреча с Захаром — итоги недели</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">Это ключевое событие первой недели. Встреча пройдёт в Zoom или МАКС — ссылку получишь утром от Аделии. Продолжительность — около 60 минут.</div>
+
+                        <div class="box box-green">
+                            <span class="box-icon">✅</span>
+                            <div>Цель встречи — убедиться, что у тебя сформировалась правильная картина работы агентства, и совместно спланировать следующий месяц.</div>
+                        </div>
+
+                        <div class="sec-label">📌 Программа встречи</div>
+                        <div class="scenario-grid">
+                            <div class="scenario-card">
+                                <div class="scenario-title">🗣️ 1. Твой рассказ о бизнес-процессе</div>
+                                <div class="scenario-body">Ты проговариваешь все 16 шагов запуска нового клиента своими словами — без подглядывания. Захар слушает, задаёт уточняющие вопросы, корректирует при необходимости.</div>
+                            </div>
+                            <div class="scenario-card">
+                                <div class="scenario-title">💬 2. Разбор кейсов — нестандартные ситуации</div>
+                                <div class="scenario-body">Захар даёт 2–3 кейса из реальной практики: «что бы ты сделал, если...». Нет правильных и неправильных ответов — важен ход мыслей.</div>
+                            </div>
+                            <div class="scenario-card">
+                                <div class="scenario-title">🔍 3. Обратная связь по первой неделе</div>
+                                <div class="scenario-body">Захар поделится своими наблюдениями. Что уже видно хорошего. Что нужно усилить. Будь открыт — это инвестиция в твой рост.</div>
+                            </div>
+                            <div class="scenario-card">
+                                <div class="scenario-title">📅 4. План на первый месяц</div>
+                                <div class="scenario-body">Совместно выстроите план: первый проект, первый самостоятельный запуск, точки контроля, следующие точки обучения.</div>
+                            </div>
+                        </div>
+
+                        <div class="sec-label">💡 Как вести себя на встрече</div>
+                        <div class="memo-wrap">
+                            <div class="memo-block green">
+                                <div class="memo-header">✅ Делай так</div>
+                                <div class="memo-list">
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Говори честно, если что-то непонятно — лучше спросить сейчас</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Задавай вопросы, которые накопились за неделю</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Делай заметки — ты будешь опираться на них в работе</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Будь конкретен: «я не понял шаг 11» лучше, чем «всё ок»</span></div>
+                                </div>
+                            </div>
+                            <div class="memo-block red">
+                                <div class="memo-header">🚫 Не делай</div>
+                                <div class="memo-list">
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не делай вид, что всё понял, если это не так</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не пытайся «продать» идеальный образ — важна реальность</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не приходи без заметок и вопросов</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── ПЕРЕРЫВ ── -->
+        <div class="tl-item">
+            <div class="tl-dot green"></div>
+            <div class="break-card">
+                <div class="break-icon">☕</div>
+                <div>
+                    <div class="break-title">Перерыв — 15:00 – 15:30 МСК</div>
+                    <div class="break-sub">Выдохни после встречи. Перечитай заметки, пока свежо в памяти.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 4: Ритм работы ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task4">
+                <div class="task-header" onclick="toggleTask('task4')">
+                    <span class="task-time">15:30 – 17:30 МСК</span>
+                    <span class="task-title">Ритм работы директолога в агентстве</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">Изучи типичный рабочий ритм, чтобы с первого рабочего дня чувствовать уверенность и понимать, что и когда от тебя ожидается.</div>
+
+                        <div class="sec-label">📅 Недельный ритм директолога</div>
+                        <div class="week-grid">
+                            <div class="week-card">
+                                <div class="week-header">🗓️ Понедельник — Старт недели</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot">›</span><span>Просмотр всех активных кампаний: расход за выходные, аномалии</span></div>
+                                    <div class="week-item"><span class="week-dot">›</span><span>Ответы на накопившиеся сообщения клиентов</span></div>
+                                    <div class="week-item"><span class="week-dot">›</span><span>Обновление приоритетов на неделю в своей системе задач</span></div>
+                                    <div class="week-item"><span class="week-dot">›</span><span>Проверка балансов — у кого скоро закончатся деньги</span></div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <div class="week-header green">📊 Вт–Чт — Основная работа</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Ведение запущенных проектов: аналитика, оптимизация ставок и минус-слов</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Работа по новым запускам: брифинги, семантика, выгрузки</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Коммуникация с командой: дизайнер, Лена, Аделия</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Ответы клиентам в течение 2–4 часов в рабочее время</span></div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <div class="week-header yellow">📝 Пятница — Закрытие недели</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Отчёты клиентам (по тем, у кого еженедельная отчётность)</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Проверка балансов — предупредить о скором окончании</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Фиксация незавершённых задач, перенос на след. неделю</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Статус-сообщение Захару: что сделано, что в процессе</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sec-label">🕐 Ежедневный ритм</div>
+                        <div class="rhythm-wrap">
+                            <div class="rhythm-row header">
+                                <div class="rhythm-cell">Время МСК</div>
+                                <div class="rhythm-cell">Действие</div>
+                            </div>
+                            <div class="rhythm-row">
+                                <div class="rhythm-cell">09:00 – 09:30</div>
+                                <div class="rhythm-cell">Утренняя проверка кампаний — расход, CTR, аномалии</div>
+                            </div>
+                            <div class="rhythm-row">
+                                <div class="rhythm-cell">09:30 – 12:00</div>
+                                <div class="rhythm-cell">Основная работа по запускам и оптимизации</div>
+                            </div>
+                            <div class="rhythm-row">
+                                <div class="rhythm-cell">12:00 – 13:00</div>
+                                <div class="rhythm-cell">Обед, полноценный отдых</div>
+                            </div>
+                            <div class="rhythm-row">
+                                <div class="rhythm-cell">13:00 – 17:00</div>
+                                <div class="rhythm-cell">Продолжение работы: коммуникация, новые задачи</div>
+                            </div>
+                            <div class="rhythm-row">
+                                <div class="rhythm-cell">17:00 – 17:30</div>
+                                <div class="rhythm-cell">Вечерняя проверка кампаний, ответы на срочные сообщения</div>
+                            </div>
+                            <div class="rhythm-row">
+                                <div class="rhythm-cell">17:30</div>
+                                <div class="rhythm-cell">Конец рабочего дня — фиксация задач на завтра</div>
+                            </div>
+                        </div>
+
+                        <div class="box box-tip" style="margin-top:16px;">
+                            <span class="box-icon">💡</span>
+                            <span>Ритм — это не жёсткий регламент, а скелет дня. Форс-мажоры бывают всегда. Но если у тебя есть структура — ты справляешься с ними быстрее.</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 5: Памятка директолога ── -->
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="task-card" id="task5">
+                <div class="task-header" onclick="toggleTask('task5')">
+                    <span class="task-time">17:30 – 18:30 МСК</span>
+                    <span class="task-title">Памятка директолога LIDIUM: принципы и стандарты</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">Это не правила из корпоративного кодекса. Это рабочие принципы, которые выстраданы годами практики. Прочитай внимательно — и сохрани.</div>
+
+                        <div class="memo-wrap">
+                            <div class="memo-block red">
+                                <div class="memo-header">🚫 Никогда не делай</div>
+                                <div class="memo-list">
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не запускай рекламу без настроенной аналитики и проверки форм</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не запускай рекламу без пополненного баланса</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не скрывай проблемы от Захара — проблема, о которой знает руководитель, уже наполовину решена</span></div><div class="memo-item"><span class="memo-mark">✗</span><span>Не давай клиенту обещаний, которые не в твоей власти выполнить</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не игнорируй сообщения клиентов дольше 4 часов в рабочее время</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не работай «на глаз» — всегда опирайся на данные и чек-листы</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✗</span><span>Не делай выгрузку в спешке без самопроверки — слитый бюджет оплачивается из своего кармана</span></div>
+                                </div>
+                            </div>
+
+                            <div class="memo-block yellow">
+                                <div class="memo-header">⚠️ Будь внимателен</div>
+                                <div class="memo-list">
+                                    <div class="memo-item"><span class="memo-mark">!</span><span>Перед любым действием с чужим рекламным бюджетом — дважды подумай</span></div>
+                                    <div class="memo-item"><span class="memo-mark">!</span><span>Клиент часто не понимает технической стороны — твоя задача объяснять просто</span></div>
+                                    <div class="memo-item"><span class="memo-mark">!</span><span>Если не знаешь ответа — не придумывай. Скажи: «Уточню и вернусь через X минут»</span></div>
+                                    <div class="memo-item"><span class="memo-mark">!</span><span>Плохой результат на хорошем сайте — проблема рекламы. Хорошая реклама на плохом сайте — всё равно нет заявок</span></div>
+                                    <div class="memo-item"><span class="memo-mark">!</span><span>Следи за балансами всех активных проектов — особенно в пятницу перед выходными</span></div>
+                                </div>
+                            </div>
+
+                            <div class="memo-block green">
+                                <div class="memo-header">✅ Делай всегда</div>
+                                <div class="memo-list">
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Проверяй кампании утром и вечером каждый рабочий день</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Держи Захара в курсе статуса проектов — он доверяет, но должен знать картину</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Предупреждай клиента о пополнении баланса заранее — не когда деньги уже кончились</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Используй шаблоны сообщений — они проверены практикой и экономят время</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Задавай вопросы — лучше спросить лишний раз, чем переделывать</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Относись к клиентским деньгам как к своим собственным</span></div>
+                                    <div class="memo-item"><span class="memo-mark">✓</span><span>Расти как специалист — читай, тестируй, делись с командой находками</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sec-label">🗣️ Золотое правило коммуникации</div>
+                        <div class="quote">
+                            Клиент всегда должен чувствовать, что его проект — в надёжных руках. Даже когда всё идёт не по плану — спокойный, профессиональный тон и чёткие следующие шаги решают 80% конфликтных ситуаций.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── БЛОК 6: План на первый месяц ── -->
+        <div class="tl-item">
+            <div class="tl-dot gold"></div>
+            <div class="task-card" id="task6">
+                <div class="task-header" onclick="toggleTask('task6')">
+                    <span class="task-time">18:30 – 19:00 МСК</span>
+                    <span class="task-title">📅 Твой план на первый месяц</span>
+                    <span class="task-chevron">▼</span>
+                </div>
+                <div class="task-body">
+                    <div class="task-inner">
+                        <div class="task-desc">После финальной встречи с Захаром у тебя будет конкретный план. Ниже — общий каркас первого месяца, который вы скорректируете вместе.</div>
+
+                        <div class="week-grid">
+                            <div class="week-card">
+                                <div class="week-header">📌 Неделя 1 (позади) — Ориентация</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot">✓</span><span>Изучил команду, инструменты, процессы</span></div>
+                                    <div class="week-item"><span class="week-dot">✓</span><span>Разобрал полный бизнес-процесс запуска</span></div>
+                                    <div class="week-item"><span class="week-dot">✓</span><span>Прошёл финальную встречу с Захаром</span></div>
+                                    <div class="week-item"><span class="week-dot">✓</span><span>Получил первый проект или наблюдал за действующим</span></div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <div class="week-header green">📌 Неделя 2 — Первые шаги</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Ведёшь первый проект под присмотром Захара</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Самостоятельно пишешь в чат клиентам по шаблонам</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Задаёшь вопросы — минимум 1 созвон с Захаром за неделю</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--green)">›</span><span>Знакомишься с текущими проектами агентства</span></div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <div class="week-header yellow">📌 Неделя 3 — Самостоятельность</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Первый полностью самостоятельный запуск (с финальной проверкой Захара)</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Ведение 2–3 проектов параллельно</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:var(--yellow)">›</span><span>Первый отчёт клиенту самостоятельно</span></div>
+                                </div>
+                            </div>
+                            <div class="week-card">
+                                <div class="week-header red">📌 Неделя 4 — Оценка и рост</div>
+                                <div class="week-body">
+                                    <div class="week-item"><span class="week-dot" style="color:#7C3AED">›</span><span>Итоговая встреча с Захаром: разбор первого месяца</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:#7C3AED">›</span><span>Обратная связь: что получилось, что нужно улучшить</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:#7C3AED">›</span><span>Новые цели на второй месяц</span></div>
+                                    <div class="week-item"><span class="week-dot" style="color:#7C3AED">›</span><span>Обсуждение нагрузки и распределения проектов</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box box-info" style="margin-top:16px;">
+                            <span class="box-icon">📎</span>
+                            <div>Этот план — живой документ. После встречи с Захаром в 14:00 вы уточните конкретные проекты, даты и метрики успеха. Зафиксируй договорённости сразу после встречи.</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /timeline -->
+
+    <div class="divider"></div>
+
+    <!-- ── ФИНАЛЬНЫЙ ЧЕКЛИСТ ── -->
+    <div class="final-card" id="final-checklist">
+        <h2>✅ Финальный чек-лист Дня 4</h2>
+        <p>Отметь всё выполненное перед тем, как закрыть страницу</p>
+        <div class="final-sections">
+
+            <div class="final-sections-2col">
+                <div>
+                    <div class="final-section-title">📋 Бизнес-процесс</div>
+                    <ul class="final-list">
+                        <li><input type="checkbox" id="fc1" onchange="updateProgress()"><label for="fc1">Изучил все 16 шагов запуска нового клиента</label></li>
+                        <li><input type="checkbox" id="fc2" onchange="updateProgress()"><label for="fc2">Могу назвать их по памяти в правильном порядке</label></li>
+                        <li><input type="checkbox" id="fc3" onchange="updateProgress()"><label for="fc3">Понимаю, кто отвечает за каждый шаг</label></li>
+                        <li><input type="checkbox" id="fc4" onchange="updateProgress()"><label for="fc4">Знаю шаблоны сообщений для клиентов</label></li>
+                        <li><input type="checkbox" id="fc5" onchange="updateProgress()"><label for="fc5">Знаю что делать при слабом сайте клиента</label></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="final-section-title">🛠️ Инструменты и стандарты</div>
+                    <ul class="final-list">
+                        <li><input type="checkbox" id="fc6" onchange="updateProgress()"><label for="fc6">Знаю логин Word Keeper для парсинга</label></li>
+                        <li><input type="checkbox" id="fc7" onchange="updateProgress()"><label for="fc7">Понимаю порядок выгрузки через Direct.Commander</label></li>
+                        <li><input type="checkbox" id="fc8" onchange="updateProgress()"><label for="fc8">Знаю, какие сервисы подключаются по умолчанию</label></li>
+                        <li><input type="checkbox" id="fc9" onchange="updateProgress()"><label for="fc9">Прочитал памятку директолога</label></li>
+                        <li><input type="checkbox" id="fc10" onchange="updateProgress()"><label for="fc10">Знаю чек-лист самопроверки перед запуском</label></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="final-sections-2col">
+                <div>
+                    <div class="final-section-title">💬 Встреча с Захаром</div>
+                    <ul class="final-list">
+                        <li><input type="checkbox" id="fc11" onchange="updateProgress()"><label for="fc11">Подготовился к вопросам финального экзамена</label></li>
+                        <li><input type="checkbox" id="fc12" onchange="updateProgress()"><label for="fc12">Прошёл встречу с Захаром в 14:00</label></li>
+                        <li><input type="checkbox" id="fc13" onchange="updateProgress()"><label for="fc13">Получил обратную связь и зафиксировал её</label></li>
+                        <li><input type="checkbox" id="fc14" onchange="updateProgress()"><label for="fc14">Зафиксировал план на первый месяц</label></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="final-section-title">🗺️ Итоги недели</div>
+                    <ul class="final-list">
+                        <li><input type="checkbox" id="fc15" onchange="updateProgress()"><label for="fc15">Знаю всех членов команды и их роли</label></li>
+                        <li><input type="checkbox" id="fc16" onchange="updateProgress()"><label for="fc16">Понимаю ритм работы директолога (день, неделя)</label></li>
+                        <li><input type="checkbox" id="fc17" onchange="updateProgress()"><label for="fc17">Готов начать работу с первого дня второй недели</label></li>
+                        <li><input type="checkbox" id="fc18" onchange="updateProgress()"><label for="fc18">Сохранил ссылки на все ключевые инструменты</label></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── WELCOME BANNER ── -->
+    <div class="welcome-banner">
+        <div class="wb-icon">🚀</div>
+        <h2>Добро пожаловать в команду LIDIUM!</h2>
+        <p>Ты прошёл все 4 дня адаптации. Теперь у тебя есть понимание процессов, инструментов и стандартов работы. Впереди — реальные проекты, реальные клиенты и реальный результат.</p>
+        <div class="wb-tagline">Помогаем хорошим бизнесам процветать 💙</div>
+    </div>
+
+    <!-- ── NAV ── -->
+    <div class="nav-row">
+        <a href="day3.html" class="btn btn-ghost">← День 3</a>
+        <span class="btn btn-disabled">День 4 из 4 — финал ✓</span>
+    </div>
+
+</div><!-- /wrap -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+    LIDIUM · Адаптация нового сотрудника · День 4 из 4<br>
+    <span style="opacity:.6;">© 2025 LIDIUM. Внутренний обучающий материал.</span>
+</footer>
+
+<script>
+    // ── Toggle task card ──
+    function toggleTask(id) {
+        const card = document.getElementById(id);
+        card.classList.toggle('open');
+        updateProgress();
+    }
+
+    // ── Toggle step ──
+    function toggleStep(id) {
+        const item = document.getElementById(id);
+        item.classList.toggle('open');
+    }
+
+    // ── Progress bar ──
+    function updateProgress() {
+        const checkboxes = document.querySelectorAll('.final-list input[type="checkbox"]');
+        const total = checkboxes.length;
+        const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+        const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressPct').textContent = pct + '%';
+
+        // Save to localStorage
+        checkboxes.forEach((cb, i) => {
+            localStorage.setItem('day4_cb_' + i, cb.checked);
+        });
+    }
+
+    // ── Restore checkboxes from localStorage ──
+    function restoreCheckboxes() {
+        const checkboxes = document.querySelectorAll('.final-list input[type="checkbox"]');
+        checkboxes.forEach((cb, i) => {
+            const saved = localStorage.getItem('day4_cb_' + i);
+            if (saved === 'true') cb.checked = true;
+        });
+        updateProgress();
+    }
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', function () {
+        restoreCheckboxes();
+    });
+</script>
+
+</body>
+</html>
